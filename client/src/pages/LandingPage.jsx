@@ -1,21 +1,23 @@
-import styled from "styled-components";
-import logo from "../assets/images/logo.svg";
-import heroImg from "../assets/images/main.svg";
+
+import { Link } from "react-router-dom";
+import heroImg from "../assets/images/mainHero.svg";
+import Wrapper from '../assets/wrappers/LandingPage';
+import {Logo } from '../components'
 import "../index.css";
 
 const LandingPage = () => {
   return (
     <Wrapper>
       <nav className='logo'>
-        <img src={logo} alt='jobify logo' />
+        <Logo/>
       </nav>
       <div className='container page'>
         <div className='info'>
           <h1>
-            Job <span>tracking</span>
+            Job <span>Track</span> App
           </h1>
           <p>
-            Welcome to CareerTrack, the ultimate job tracking solution designed
+            Welcome to Job Track, the ultimate job tracking solution designed
             to empower job seekers like you. Whether you're a recent graduate or
             an experienced professional, CareerTrack helps you take control of
             your career path. Our intuitive platform enables you to effortlessly
@@ -25,7 +27,7 @@ const LandingPage = () => {
             track, stay organized, and propel your career forward with
             CareerTrack. Start tracking your success today!
           </p>
-          <button className='btn btn-hero'>Login/signup</button>
+         <Link to="/register"><button className='btn btn-hero'>Login/signup</button></Link> 
         </div>
         <img src={heroImg} alt='job hunt' className='img main-img' />
       </div>
@@ -33,43 +35,6 @@ const LandingPage = () => {
   );
 };
 
-const Wrapper = styled.main`
-  nav {
-    width: var(--fluid-width);
-    max-width: var(--max-width);
-    margin: 0 auto;
-    height: var(--nav-height);
-    display: flex;
-    align-items: center;
-    
-  }
-  .page{
-    min-height: calc(100vh-var(--nav-height));
-    display: grid;
-    align-items: center;
-    /* margin-top: -3rem; */
-    h1{
-      font-weight: 700;
-    }
-    span{
-      color:var(--primary-500)
-    }
-    p{
-      color: var(--gray-500);
-    }
-  }
-  .main-img{
-    display: none;
-  }
-  @media (min-width: 990px){
-    .page{
-      grid-template-columns:1fr 1fr;
-      column-gap: 3rem;
-    }
-    .main-img{
-      display: block;
-    }
-  }
-`;
+
 
 export default LandingPage;
