@@ -1,36 +1,78 @@
-import {useState,useEffect} from 'react'
-import {Logo} from '../components'
-import Wrapper from '../assets/wrappers/RegisterPage.js'
+import { useState, useEffect } from "react";
+import { Logo, FormRow, Alert } from "../components";
+import Wrapper from "../assets/wrappers/RegisterPage.js";
+import { useAppContext } from "../context/appContext";
 
-const initialState={
-  name:'',
-  email:'',
-  password:'',
-  isMember:true
-}
+
+const initialState = {
+  name: "",
+  email: "",
+  password: "",
+  isMember: true,
+  // showAlert:false
+};
 
 const Register = () => {
-  const [value,setValue]=useState(initialState)
-const handleChange=(e)=>{
-  setValue()
-}
- 
-const handleSubmit=(e) => {
-  // e.preventDefault()
-  console.log(e.target.value)
-}
+  const { showAlert, isLoading,displayAlert } = useAppContext();
+
+  const [values, setValues] = useState(initialState);
+  const handleChange = (e) => {
+  
+    setValues({...values, [e.target.name]:e.target.value});
+    console.log(values)
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault()
+    const {email,name,password,isMember}=values;
+    if(!name||!email||!password ||(!isMember&&!name)){
+      displayAlert()
+      return
+    }
+    console.log(values)
+  };
+
+  const toggleMember = (e) => {
+    setValues({ ...values,isMember: !values.isMember });
+  };
   return (
-    <Wrapper className="full-page">
-      <form className='form' onSubmit={handleSubmit}>
-      <Logo/>
-      <h3>login </h3>
-      <div className="from-row">
-        <label htmlFor="name" className='form-label'>Name</label>
-        <input className="form-input" type="text" value={value.name} name="name" onChange={handleChange}/>
-      </div>
-      <button type="submit" className="btn btn-block">Submit</button>
+    <Wrapper className='full-page'>
+      <form className='form' onSubmit={onSubmit}>
+        <Logo />
+        <h3>{values.isMember ? "Login" : "Register"} </h3>
+        {showAlert && <Alert />}
+        {!values.isMember && (
+          <FormRow
+            name='name'
+            type='text'
+            value={values.name}
+            handleChange={handleChange}
+          />
+        )}
+
+        <FormRow
+          name='email'
+          type='email'
+          value={values.email}
+          handleChange={handleChange}
+        />
+        <FormRow
+          name='password'
+          type='password'
+          value={values.password}
+          handleChange={handleChange}
+        />
+        <button type='submit' className='btn btn-block'>
+          Submit
+        </button>
+        <p>
+          {values.isMember ? "Not a member yet?" : "Member already"}
+          <button type='button' onClick={toggleMember} className='member-btn'>
+            {values.isMember ? "Register" : "Log"}
+          </button>
+        </p>
       </form>
     </Wrapper>
-  )
-}
-export default Register
+  );
+};
+export default Register;
