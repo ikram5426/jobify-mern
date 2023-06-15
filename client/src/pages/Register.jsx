@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Logo, FormRow, Alert } from "../components";
 import Wrapper from "../assets/wrappers/RegisterPage.js";
 import { useAppContext } from "../context/appContext";
-
 
 const initialState = {
   name: "",
@@ -13,28 +13,44 @@ const initialState = {
 };
 
 const Register = () => {
-  const { showAlert, isLoading,displayAlert } = useAppContext();
+  const navigate = useNavigate();
+  const { user, showAlert, isLoading, displayAlert, registerUser } =
+    useAppContext();
 
   const [values, setValues] = useState(initialState);
   const handleChange = (e) => {
-  
-    setValues({...values, [e.target.name]:e.target.value});
-    console.log(values)
+    setValues({ ...values, [e.target.name]: e.target.value });
   };
 
   const onSubmit = (e) => {
-    e.preventDefault()
-    const {email,name,password,isMember}=values;
-    if(!name||!email||!password ||(!isMember&&!name)){
-      displayAlert()
-      return
+    e.preventDefault();
+    const { email, name, password, isMember } = values;
+    if (!name || !email || !password || (!isMember && !name)) {
+      displayAlert();
+      return;
     }
-    console.log(values)
+
+    const currentUser = { name, email, password };
+
+    if (isMember) {
+      console.log("Already member");
+    } else {
+      registerUser(currentUser);
+    }
   };
 
   const toggleMember = (e) => {
-    setValues({ ...values,isMember: !values.isMember });
+    setValues({ ...values, isMember: !values.isMember });
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      if(user){
+        navigate('/')
+      }
+    }, 2000);
+  }, [user,navigate]);
+
   return (
     <Wrapper className='full-page'>
       <form className='form' onSubmit={onSubmit}>
@@ -62,7 +78,7 @@ const Register = () => {
           value={values.password}
           handleChange={handleChange}
         />
-        <button type='submit' className='btn btn-block'>
+        <button type='submit' className='btn btn-block' disabled={isLoading}>
           Submit
         </button>
         <p>

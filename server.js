@@ -1,5 +1,6 @@
 import express from "express";
 import "express-async-errors";
+import cors from 'cors'
 import dotenv from "dotenv";
 import PageNotFound from "./middleware/pageNotFound.js";
 import errorHandler from "./middleware/errorHandler.js";
@@ -11,14 +12,16 @@ dotenv.config();
 
 const app = express();
 
+app.use(cors())
 app.use(express.json());
 
-app.get("/", (req, res) => {
+app.get("/api/v1", (req, res) => {
   res.send("Welcome from Server Side");
 });
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/jobs", jobsRouter);
+
 
 connectDb();
 

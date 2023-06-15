@@ -9,9 +9,9 @@ function App() {
     <Fragment>
       <Routes>
         <Route path='/' exact element={<LandingPage/>} />
-        <Route path='/*' exact element={<Error/>} />
         <Route path='/register' exact element={<Register/>} />
         <Route path='/dashboard' exact element={<Dashboard/>} />
+        <Route path='/*' exact element={<Error/>} />
       </Routes>
     </Fragment>
   );
